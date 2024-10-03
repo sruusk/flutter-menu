@@ -1,0 +1,28 @@
+{
+  "weekdays": {
+    "monday": "Maanantai",
+    "tuesday": "Tiistai",
+    "wednesday": "Keskiviikko",
+    "thursday": "Torstai",
+    "friday": "Perjantai",
+    "saturday": "Lauantai",
+    "sunday": "Sunnuntai"
+  },
+  "shortWeekdays": {
+    "monday": "Ma",
+    "tuesday": "Ti",
+    "wednesday": "Ke",
+    "thursday": "To",
+    "friday": "Pe",
+    "saturday": "La",
+    "sunday": "Su"
+  },
+  "settings": {
+    "filter": "Suodata",
+    "settings": "Asetukset",
+    "selectDay": "Valitse päivä",
+    "selectLang": "Kieli",
+    "fi": "suomi",
+    "en": "English"
+  }
+}

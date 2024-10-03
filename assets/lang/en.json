@@ -1,0 +1,28 @@
+{
+  "weekdays": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+  "shortWeekdays": {
+    "monday": "Mon",
+    "tuesday": "Tue",
+    "wednesday": "Wed",
+    "thursday": "Thu",
+    "friday": "Fri",
+    "saturday": "Sat",
+    "sunday": "Sun"
+  },
+  "settings": {
+    "filter": "Filter",
+    "settings": "Settings",
+    "selectDay": "Select day",
+    "selectLang": "Language",
+    "fi": "suomi",
+    "en": "English"
+  }
+}
