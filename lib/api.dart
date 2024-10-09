@@ -69,6 +69,23 @@ class MenuApi {
     return availableDates;
   }
 
+  Future<List<String>> getCampuses() async {
+    // Fetch the data from the API
+    if(restaurants.isEmpty) {
+      restaurants = await fetchMenu();
+    }
+
+    // Get the campuses from the menu
+    List<String> campuses = [];
+    for (var restaurant in restaurants) {
+      if (!campuses.contains(restaurant.campus)) {
+        campuses.add(restaurant.campus);
+      }
+    }
+
+    return campuses;
+  }
+
   static String getDayOfWeek(int day) {
     switch (day) {
       case 1:

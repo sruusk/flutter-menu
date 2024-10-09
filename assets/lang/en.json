@@ -23,6 +23,10 @@
     "selectDay": "Select day",
     "selectLang": "Language",
     "fi": "suomi",
-    "en": "English"
-  }
+    "en": "English",
+    "selectCampus": "Select campus"
+  },
+    "menu": {
+        "noName": "No english name available"
+    }
 }

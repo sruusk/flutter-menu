@@ -6,7 +6,7 @@ import '../preferences.dart';
 import '../provider.dart';
 import 'settings_widgets.dart';
 
-Future<void> showDateBottomSheet(BuildContext context, Future<List<Tuple2<DateTime, String>>> availableDates, Function(DateTime) setDate, MenuApi api, DateTime date) {
+Future<void> showDateBottomSheet(BuildContext context, Future<List<Tuple2<DateTime, String>>> availableDates, Future<List<String>> campuses, Function(DateTime) setDate, MenuApi api, DateTime date) {
   return showModalBottomSheet(
     context: context,
     showDragHandle: true,
@@ -55,6 +55,32 @@ Future<void> showDateBottomSheet(BuildContext context, Future<List<Tuple2<DateTi
                       buttonText: AppLocalizations.of(context).translate('weekdays.${MenuApi.getDayOfWeek(date.weekday)}'),
                       onPressed: () {},
                     ),
+                  ),
+                  FutureBuilder(
+                      future: campuses,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return SettingsCard(
+                            title: "${AppLocalizations.of(context).translate('settings.selectCampus')}: ",
+                            child: MenuAnchorWidget(
+                              menuChildren: [
+                                for (var campus in snapshot.data!)
+                                  MenuItemButton(
+                                    child: Text(campus),
+                                    onPressed: () {
+                                      preferencesNotifier.setPreference('campus', campus);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                              ],
+                              buttonText: preferencesNotifier.value.preferences['campus'] ?? '',
+                              onPressed: () {},
+                            ),
+                          );
+                        } else {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                      }
                   ),
                   SettingsCard(
                     title: "${AppLocalizations.of(context).translate('settings.selectLang')}: ",

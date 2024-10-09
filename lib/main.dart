@@ -67,6 +67,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late Future<List<FilteredRestaurant>> futureRestaurants;
+  late Future<List<String>> campuses;
   late Future<List<Tuple2<DateTime, String>>> availableDates;
   DateTime date = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   final PageController _pageController = PageController();
@@ -78,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     futureRestaurants = api.menu;
     availableDates = api.getAvailableDates();
+    campuses = api.getCampuses();
     availableDates.then(((dates) {
       if (dates.isNotEmpty) {
         _setDate(dates.first.item1);
@@ -101,6 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    final preferencesNotifier = Provider.of<PreferencesNotifier>(context);
     return Scaffold(
       body: Column(
         // Center is a layout widget. It takes a single child and positions it
@@ -110,7 +113,11 @@ class _MyHomePageState extends State<MyHomePage> {
             child: FutureBuilder<List<FilteredRestaurant>>(
               future: futureRestaurants,
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
+                if(preferencesNotifier.value.preferences['campus'].runtimeType != String || preferencesNotifier.value.preferences['campus'] == '') {
+                    preferencesNotifier.setPreference('campus', snapshot.data!.first.campus);
+                }
+                List<FilteredRestaurant>? data = snapshot.data?.where((element) => element.campus == preferencesNotifier.value.preferences['campus']).toList();
+                if (snapshot.hasData && data != null && data.isNotEmpty) {
                   return Column(
                     children: [
                       SafeArea(
@@ -118,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           padding: const EdgeInsets.all(10.0),
                           child: SmoothPageIndicator(
                             controller: _pageController,
-                            count: snapshot.data!.length,
+                            count: data.length,
                             effect: SwapEffect(
                               activeDotColor: Theme.of(context).colorScheme.primaryContainer,
                               dotColor: Theme.of(context).colorScheme.secondaryContainer,
@@ -136,9 +143,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       Expanded(
                         child: PageView.builder(
                           controller: _pageController,
-                          itemCount: snapshot.data!.length,
+                          itemCount: data.length,
                           itemBuilder: (context, index) {
-                            return RestaurantWidget(restaurant: snapshot.data![index]);
+                            return RestaurantWidget(restaurant: data[index]);
                           },
                         ),
                       ),
@@ -162,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your onPressed code here!
-          showDateBottomSheet(context, availableDates, _setDate, api, date);
+          showDateBottomSheet(context, availableDates, campuses, _setDate, api, date);
         },
         tooltip: AppLocalizations.of(context).translate('settings.settings'),
         child: const Icon(Icons.settings),
