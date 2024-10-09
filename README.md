@@ -1,16 +1,46 @@
-# lunch_menu
+# Flutter Lunch Menu App
 
-A new Flutter project.
+[![Build](https://github.com/sruusk/flutter-menu/actions/workflows/release.yml/badge.svg)](https://github.com/sruusk/flutter-menu/actions/workflows/release.yml)
+
+This project displays the menus of student restaurants. It uses the backend API from [sruusk/ou-lunch](https://github.com/sruusk/ou-lunch) for the menu data.
+
+## Features
+
+- Fetches menu data from the backend API.
+- Displays menus for different campuses.
+- Supports multiple languages for menu items.
+- Allows users to switch between campuses.
+- Supports dark/light themes.
+- Allows selecting a date to view the menu for that day.
+
+## Screenshot
+
+![App Screenshot](screenshot.png)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Prerequisites
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter SDK
+- Dart SDK
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Installation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/sruusk/flutter-menu.git
+    ```
+2. Navigate to the project directory:
+    ```sh
+    cd flutter-menu
+    ```
+3. Install dependencies:
+    ```sh
+    flutter pub get
+    ```
+
+### Running the App
+
+To run the app on an emulator or physical device, use:
+```sh
+flutter run
