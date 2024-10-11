@@ -67,7 +67,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late Future<List<FilteredRestaurant>> futureRestaurants;
-  late Future<List<String>> campuses;
+  late Future<List<Campus>> campuses;
   late Future<List<Tuple2<DateTime, String>>> availableDates;
   DateTime date = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   final PageController _pageController = PageController();
@@ -114,9 +114,12 @@ class _MyHomePageState extends State<MyHomePage> {
               future: futureRestaurants,
               builder: (context, snapshot) {
                 if(preferencesNotifier.value.preferences['campus'].runtimeType != String || preferencesNotifier.value.preferences['campus'] == '') {
-                    preferencesNotifier.setPreference('campus', snapshot.data!.first.campus);
+                  if(snapshot.data != null && snapshot.data!.isNotEmpty) {
+                    preferencesNotifier.setPreference(
+                        'campus', snapshot.data!.first.campus.toString());
+                  }
                 }
-                List<FilteredRestaurant>? data = snapshot.data?.where((element) => element.campus == preferencesNotifier.value.preferences['campus']).toList();
+                List<FilteredRestaurant>? data = snapshot.data?.where((element) => element.campus.toString() == preferencesNotifier.value.preferences['campus']).toList();
                 if (snapshot.hasData && data != null && data.isNotEmpty) {
                   return Column(
                     children: [

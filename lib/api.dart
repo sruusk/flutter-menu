@@ -69,17 +69,20 @@ class MenuApi {
     return availableDates;
   }
 
-  Future<List<String>> getCampuses() async {
+  Future<List<Campus>> getCampuses() async {
     // Fetch the data from the API
     if(restaurants.isEmpty) {
       restaurants = await fetchMenu();
     }
 
     // Get the campuses from the menu
-    List<String> campuses = [];
+    List<String> added = [];
+    List<Campus> campuses = [];
     for (var restaurant in restaurants) {
-      if (!campuses.contains(restaurant.campus)) {
-        campuses.add(restaurant.campus);
+      var campus = restaurant.campus;
+      if(!added.contains(campus.toString())) {
+        added.add(campus.toString());
+        campuses.add(campus);
       }
     }
 
@@ -123,7 +126,7 @@ class MenuApi {
 class Restaurant {
   final String name;
   final String url;
-  final String campus;
+  final Campus campus;
   final List<Menu> menu;
 
   const Restaurant({
@@ -142,7 +145,7 @@ class Restaurant {
     return Restaurant(
       name: json['name'],
       url: json['url'],
-      campus: json['campus'],
+      campus: Campus(campus: json['campus'], city: json['city']),
       menu: menu,
     );
   }
@@ -153,10 +156,30 @@ class Restaurant {
   }
 }
 
+class Campus {
+  final String campus;
+  final String city;
+
+  const Campus({
+    required this.campus,
+    required this.city
+  });
+
+  factory Campus.fromString(String campus) {
+    var parts = campus.split(' - ');
+    return Campus(campus: parts[0], city: parts[1]);
+  }
+
+  @override
+  String toString() {
+    return '$city - $campus';
+  }
+}
+
 class FilteredRestaurant {
   final String name;
   final String url;
-  final String campus;
+  final Campus campus;
   final Menu menu;
 
   const FilteredRestaurant({

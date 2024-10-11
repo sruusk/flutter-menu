@@ -15,11 +15,11 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      #1 Checkout Repository
+      # Checkout Repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      #3 Setup Java
+      # Setup Java
       - name: Set Up Java
         uses: actions/setup-java@v4
         with:
@@ -27,7 +27,7 @@ jobs:
           java-version: '17'
           cache: gradle
 
-      #4 Cache Flutter Dependencies
+      # Cache Flutter Dependencies
       - name: Cache Flutter Dependencies
         uses: actions/cache@v4
         with:
@@ -38,41 +38,58 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-flutter-
 
-      #5 Setup Flutter
+      # Setup Flutter
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.2'
           channel: 'stable'
 
-      #6 Install Dependencies
+      # Install Dependencies
       - name: Install Dependencies
         run: flutter pub get
 
-      #7 Building APK
-      - name: Build APK
-        run: flutter build apk --release
+      # Setup Signing Keys
+      - name: Setup Signing Keys
+        run: |
+          echo "${{ secrets.SIGNING_KEY }}" | base64 --decode > /tmp/signing_key.jks
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
 
-      #8 Upload Artifacts
+      # Set SIGNING_KEY_PATH
+      - name: Set SIGNING_KEY_PATH
+        run: echo "SIGNING_KEY_PATH=/tmp/signing_key.jks" >> $GITHUB_ENV
+
+      # Building APK
+      - name: Build APK
+        run: |
+          flutter build apk --release --no-shrink --dart-define=KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }} --dart-define=KEY_ALIAS=${{ secrets.KEY_ALIAS }} --dart-define=KEY_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+
+      # Upload Artifacts
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Releases
           path: build/app/outputs/flutter-apk/app-release.apk
 
-      #9 Extract Version
+      # Extract Version
       - name: Extract version from pubspec.yaml
         id: extract_version
         run: |
           version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
           echo "VERSION=$version" >> $GITHUB_ENV
 
+      # Check Tag Exists
       - uses: mukunku/tag-exists-action@v1.6.0
         id: check-tag
         with:
           tag: "v${{ env.VERSION }}"
 
-      #12 Create Release
+      # Create Release
       - name: Create Release
         if: steps.check-tag.outputs.exists == 'false'
         uses: ncipollo/release-action@v1

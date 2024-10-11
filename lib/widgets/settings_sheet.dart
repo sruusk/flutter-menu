@@ -6,7 +6,7 @@ import '../preferences.dart';
 import '../provider.dart';
 import 'settings_widgets.dart';
 
-Future<void> showDateBottomSheet(BuildContext context, Future<List<Tuple2<DateTime, String>>> availableDates, Future<List<String>> campuses, Function(DateTime) setDate, MenuApi api, DateTime date) {
+Future<void> showDateBottomSheet(BuildContext context, Future<List<Tuple2<DateTime, String>>> availableDates, Future<List<Campus>> campuses, Function(DateTime) setDate, MenuApi api, DateTime date) {
   return showModalBottomSheet(
     context: context,
     showDragHandle: true,
@@ -66,9 +66,9 @@ Future<void> showDateBottomSheet(BuildContext context, Future<List<Tuple2<DateTi
                               menuChildren: [
                                 for (var campus in snapshot.data!)
                                   MenuItemButton(
-                                    child: Text(campus),
+                                    child: Text(campus.toString()),
                                     onPressed: () {
-                                      preferencesNotifier.setPreference('campus', campus);
+                                      preferencesNotifier.setPreference('campus', campus.toString());
                                       Navigator.pop(context);
                                     },
                                   ),
