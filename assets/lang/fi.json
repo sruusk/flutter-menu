@@ -29,5 +29,8 @@
   "menu": {
     "noName": "",
     "noData": "Valitulle päivälle ei ole saatavilla ruokalistaa"
+  },
+  "update": {
+      "available": "Uusi versio saatavilla"
   }
 }

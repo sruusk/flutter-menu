@@ -8,6 +8,7 @@ import 'widgets/restaurant_widget.dart';
 import 'widgets/settings_sheet.dart';
 import 'localisation.dart';
 import 'preferences.dart';
+import 'widgets/update_widget.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure the binding is initialized
@@ -109,6 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         children: [
+          const UpdateWidget(),
           Expanded(
             child: FutureBuilder<List<FilteredRestaurant>>(
               future: futureRestaurants,
@@ -125,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       data.length > 1 ? SafeArea(
                         child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: SmoothPageIndicator(
                             controller: _pageController,
                             count: data.length,

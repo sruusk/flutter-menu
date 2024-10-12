@@ -29,5 +29,8 @@
   "menu": {
     "noName": "No english name available",
     "noData": "No menu available for selected day"
+  },
+  "update": {
+    "available": "New version available"
   }
 }
