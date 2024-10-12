@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 if (snapshot.hasData && data != null && data.isNotEmpty) {
                   return Column(
                     children: [
-                      SafeArea(
+                      data.length > 1 ? SafeArea(
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: SmoothPageIndicator(
@@ -142,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ),
-                      ),
+                      ) : SafeArea(child: Container()),
                       Expanded(
                         child: PageView.builder(
                           controller: _pageController,
