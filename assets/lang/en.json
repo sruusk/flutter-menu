@@ -26,7 +26,8 @@
     "en": "English",
     "selectCampus": "Select campus"
   },
-    "menu": {
-        "noName": "No english name available"
-    }
+  "menu": {
+    "noName": "No english name available",
+    "noData": "No menu available for selected day"
+  }
 }

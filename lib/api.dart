@@ -64,7 +64,13 @@ class MenuApi {
     // Remove duplicates
     availableDates = availableDates.toSet().toList();
 
+    // Sort the dates
     availableDates.sort((a, b) => a.item1.compareTo(b.item1));
+
+    // Limit the number of dates to 6
+    if (availableDates.length > 6) {
+      availableDates = availableDates.sublist(0, 6);
+    }
 
     return availableDates;
   }

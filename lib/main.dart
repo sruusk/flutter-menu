@@ -156,6 +156,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
+                } else if(data != null && data.isEmpty) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                      child: Text(
+                          AppLocalizations.of(context).translate('menu.noData'),
+                          style: Theme.of(context).textTheme.titleLarge,
+                          textAlign: TextAlign.center,
+                      ),
+                    )
+                  );
                 }
                 // By default, show a loading spinner.
                 return const Row(

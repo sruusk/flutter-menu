@@ -27,6 +27,7 @@
     "selectCampus": "Valitse kampus"
   },
   "menu": {
-    "noName": ""
+    "noName": "",
+    "noData": "Valitulle päivälle ei ole saatavilla ruokalistaa"
   }
 }
