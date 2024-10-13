@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_app_update/azhon_app_update.dart';
 import 'package:flutter_app_update/update_model.dart';
@@ -16,9 +15,12 @@ class Updater {
 
     // Check if last checked is more than 1 day ago
     String? lastChecked = prefs?.getString('lastChecked');
-    if (lastChecked != null && !kDebugMode) {
+    if (lastChecked != null) {
       DateTime lastCheckedDate = DateTime.parse(lastChecked);
       if (DateTime.now().difference(lastCheckedDate).inDays < 1) {
+        if (kDebugMode) {
+          print('Last checked less than 1 day ago, skipping update check');
+        }
         return false;
       }
     }
@@ -44,11 +46,11 @@ class Updater {
       // Compare versions
       if (latestRelease.version > currentVersion) {
         if(kDebugMode) {
-          print('Update available: ${latestRelease.version} > ${currentVersion}');
+          print('Update available: ${latestRelease.version} > $currentVersion');
         }
         return true;
       } else if(kDebugMode) {
-        print('No update available: ${latestRelease.version} <= ${currentVersion}');
+        print('No update available: ${latestRelease.version} <= $currentVersion');
       }
     } else {
       if (kDebugMode) {
@@ -62,10 +64,8 @@ class Updater {
 
   void downloadAndInstallUpdate() {
     // Download and install update
-    print('Download update from ${latestRelease.downloadUrl}');
-
-    if(latestRelease.downloadUrl == null) {
-      return;
+    if (kDebugMode) {
+      print('Download update from ${latestRelease.downloadUrl}');
     }
 
     AzhonAppUpdate.listener((map) {

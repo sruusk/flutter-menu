@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'provider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tuple/tuple.dart';
 import 'api.dart';
-import 'widgets/restaurant_widget.dart';
 import 'widgets/settings_sheet.dart';
 import 'localisation.dart';
 import 'preferences.dart';
 import 'widgets/update_widget.dart';
+import 'widgets/narrow_restaurant_list.dart';
+import 'widgets/wide_restaurant_list.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure the binding is initialized
@@ -71,7 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
   late Future<List<Campus>> campuses;
   late Future<List<Tuple2<DateTime, String>>> availableDates;
   DateTime date = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  final PageController _pageController = PageController();
   final MenuApi api = MenuApi();
 
 
@@ -123,42 +122,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
                 List<FilteredRestaurant>? data = snapshot.data?.where((element) => element.campus.toString() == preferencesNotifier.value.preferences['campus']).toList();
                 if (snapshot.hasData && data != null && data.isNotEmpty) {
-                  return Column(
-                    children: [
-                      data.length > 1 ? SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SmoothPageIndicator(
-                            controller: _pageController,
-                            count: data.length,
-                            effect: SwapEffect(
-                              activeDotColor: Theme.of(context).colorScheme.primaryContainer,
-                              dotColor: Theme.of(context).colorScheme.secondaryContainer,
-                              dotWidth: 15.0,
-                              dotHeight: 15.0,
-                            ),
-                            onDotClicked: (index) => _pageController.animateToPage(
-                              index,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOut,
-                            ),
-                          ),
-                        ),
-                      ) : SafeArea(child: Container()),
-                      Expanded(
-                        child: PageView.builder(
-                          controller: _pageController,
-                          itemCount: data.length,
-                          itemBuilder: (context, index) {
-                            return RestaurantWidget(restaurant: data[index]);
-                          },
-                        ),
-                      ),
-                    ],
-                  );
+                  return LayoutBuilder(builder: (context, constraints) {
+                    if(constraints.maxWidth > 600) {
+                      return WideRestaurantView(data: data);
+                    } else {
+                      return NarrowRestaurantList(data: data);
+                    }
+                  });
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
-                } else if(data != null && data.isEmpty) {
+                } else if(data != null && data.isEmpty && snapshot.connectionState == ConnectionState.done) {
                   return Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Center(
@@ -193,3 +166,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+

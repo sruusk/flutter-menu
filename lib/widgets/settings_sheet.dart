@@ -10,108 +10,111 @@ Future<void> showDateBottomSheet(BuildContext context, Future<List<Tuple2<DateTi
   return showModalBottomSheet(
     context: context,
     showDragHandle: true,
+    isScrollControlled: true,
     enableDrag: true,
     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     builder: (BuildContext builder) {
       final preferencesNotifier = Provider.of<PreferencesNotifier>(context);
 
-      return FutureBuilder<List<Tuple2<DateTime, String>>>(
-        future: availableDates,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Container(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-              height: MediaQuery.of(context).size.height / 3,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
+      return SingleChildScrollView(
+        child: FutureBuilder<List<Tuple2<DateTime, String>>>(
+          future: availableDates,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Container(
+                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                  height: 300,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                            AppLocalizations.of(context).translate('settings.settings'),
-                            style: Theme.of(context).textTheme.headlineSmall
-                        ),
-                      ],
-                    ),
-                  ),
-                  SettingsCard(
-                    title: "${AppLocalizations.of(context).translate('settings.selectDay')}: ",
-                    child: MenuAnchorWidget(
-                      menuChildren: [
-                        for (var dateOption in snapshot.data!)
-                          MenuItemButton(
-                            child: Text(AppLocalizations.of(context).translate('weekdays.${MenuApi.getDayOfWeek(dateOption.item1.weekday)}')),
-                            onPressed: () {
-                              setDate(dateOption.item1);
-                              Navigator.pop(context);
-                            },
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                  AppLocalizations.of(context).translate('settings.settings'),
+                                  style: Theme.of(context).textTheme.headlineSmall
+                              ),
+                            ],
                           ),
-                      ],
-                      buttonText: AppLocalizations.of(context).translate('weekdays.${MenuApi.getDayOfWeek(date.weekday)}'),
-                      onPressed: () {},
-                    ),
-                  ),
-                  FutureBuilder(
-                      future: campuses,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return SettingsCard(
-                            title: "${AppLocalizations.of(context).translate('settings.selectCampus')}: ",
-                            child: MenuAnchorWidget(
-                              menuChildren: [
-                                for (var campus in snapshot.data!)
-                                  MenuItemButton(
-                                    child: Text(campus.toString()),
-                                    onPressed: () {
-                                      preferencesNotifier.setPreference('campus', campus.toString());
-                                      Navigator.pop(context);
-                                    },
+                        ),
+                        SettingsCard(
+                          title: "${AppLocalizations.of(context).translate('settings.selectDay')}: ",
+                          child: MenuAnchorWidget(
+                            menuChildren: [
+                              for (var dateOption in snapshot.data!)
+                                MenuItemButton(
+                                  child: Text(AppLocalizations.of(context).translate('weekdays.${MenuApi.getDayOfWeek(dateOption.item1.weekday)}')),
+                                  onPressed: () {
+                                    setDate(dateOption.item1);
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                            ],
+                            buttonText: AppLocalizations.of(context).translate('weekdays.${MenuApi.getDayOfWeek(date.weekday)}'),
+                            onPressed: () {},
+                          ),
+                        ),
+                        FutureBuilder(
+                            future: campuses,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return SettingsCard(
+                                  title: "${AppLocalizations.of(context).translate('settings.selectCampus')}: ",
+                                  child: MenuAnchorWidget(
+                                    menuChildren: [
+                                      for (var campus in snapshot.data!)
+                                        MenuItemButton(
+                                          child: Text(campus.toString()),
+                                          onPressed: () {
+                                            preferencesNotifier.setPreference('campus', campus.toString());
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                    ],
+                                    buttonText: preferencesNotifier.value.preferences['campus'] ?? '',
+                                    onPressed: () {},
                                   ),
-                              ],
-                              buttonText: preferencesNotifier.value.preferences['campus'] ?? '',
-                              onPressed: () {},
-                            ),
-                          );
-                        } else {
-                          return const Center(child: CircularProgressIndicator());
-                        }
-                      }
-                  ),
-                  SettingsCard(
-                    title: "${AppLocalizations.of(context).translate('settings.selectLang')}: ",
-                    child: MenuAnchorWidget(
-                      menuChildren: [
-                        MenuItemButton(
-                          child: const Text('English'),
-                          onPressed: () {
-                            preferencesNotifier.setPreference('language_code', 'en');
-                            Navigator.pop(context);
-                          },
+                                );
+                              } else {
+                                return const Center(child: CircularProgressIndicator());
+                              }
+                            }
                         ),
-                        MenuItemButton(
-                          child: const Text('Suomi'),
-                          onPressed: () {
-                            preferencesNotifier.setPreference('language_code', 'fi');
-                            Navigator.pop(context);
-                          },
+                        SettingsCard(
+                          title: "${AppLocalizations.of(context).translate('settings.selectLang')}: ",
+                          child: MenuAnchorWidget(
+                            menuChildren: [
+                              MenuItemButton(
+                                child: const Text('English'),
+                                onPressed: () {
+                                  preferencesNotifier.setPreference('language_code', 'en');
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              MenuItemButton(
+                                child: const Text('Suomi'),
+                                onPressed: () {
+                                  preferencesNotifier.setPreference('language_code', 'fi');
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                            buttonText: AppLocalizations.of(context).translate('settings.${AppLocalizations.of(context).locale.languageCode}'),
+                            onPressed: () {},
+                          ),
                         ),
-                      ],
-                      buttonText: AppLocalizations.of(context).translate('settings.${AppLocalizations.of(context).locale.languageCode}'),
-                      onPressed: () {},
-                    ),
-                  ),
-                ]
-              )
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+                      ]
+                  )
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       );
     },
   );
