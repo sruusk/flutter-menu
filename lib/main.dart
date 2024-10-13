@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:lunch_menu/widgets/delayed_widget.dart';
 import 'provider.dart';
 import 'package:tuple/tuple.dart';
 import 'api.dart';
@@ -132,15 +133,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 } else if(data != null && data.isEmpty && snapshot.connectionState == ConnectionState.done) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Center(
-                      child: Text(
-                          AppLocalizations.of(context).translate('menu.noData'),
-                          style: Theme.of(context).textTheme.titleLarge,
-                          textAlign: TextAlign.center,
+                  return DelayedWidget(
+                      delay: const Duration(seconds: 1),
+                      child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Center(
+                            child: Text(
+                              AppLocalizations.of(context).translate('menu.noData'),
+                              style: Theme.of(context).textTheme.titleLarge,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                       ),
-                    )
                   );
                 }
                 // By default, show a loading spinner.
@@ -157,12 +161,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your onPressed code here!
           showDateBottomSheet(context, availableDates, campuses, _setDate, api, date);
         },
         tooltip: AppLocalizations.of(context).translate('settings.settings'),
         child: const Icon(Icons.settings),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     name: Build & Release
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       # Checkout Repository
@@ -34,9 +34,9 @@ jobs:
           path: |
             ~/.pub-cache
             .packages
-          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }}
+          key: ${{ runner.os }}-flutter
           restore-keys: |
-            ${{ runner.os }}-flutter-
+            ${{ runner.os }}-flutter
 
       # Setup Flutter
       - name: Set Up Flutter
