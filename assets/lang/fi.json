@@ -24,7 +24,9 @@
     "selectLang": "Kieli",
     "fi": "suomi",
     "en": "English",
-    "selectCampus": "Valitse kampus"
+    "selectCampus": "Valitse kampus",
+    "version": "Sovelluksen versio",
+    "checkUpdate": "Tarkista päivitykset"
   },
   "menu": {
     "noName": "",
@@ -34,6 +36,7 @@
     "errorDetails": "Näytä virheen tiedot"
   },
   "update": {
-      "available": "Uusi versio saatavilla"
+      "available": "Uusi versio saatavilla",
+      "update": "Päivitä"
   }
 }

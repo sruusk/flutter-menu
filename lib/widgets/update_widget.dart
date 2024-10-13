@@ -30,7 +30,7 @@ class UpdateWidget extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.download),
+                        icon: const Icon(Icons.download),
                         onPressed: () async {
                           updater.downloadAndInstallUpdate();
                         },

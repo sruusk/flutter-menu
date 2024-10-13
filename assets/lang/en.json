@@ -24,7 +24,9 @@
     "selectLang": "Language",
     "fi": "suomi",
     "en": "English",
-    "selectCampus": "Select campus"
+    "selectCampus": "Select campus",
+    "version": "App version",
+    "checkUpdate": "Check for updates"
   },
   "menu": {
     "noName": "No english name available",
@@ -34,6 +36,7 @@
     "errorDetails": "Show full error details"
   },
   "update": {
-    "available": "New version available"
+    "available": "New version available",
+    "update": "Update"
   }
 }

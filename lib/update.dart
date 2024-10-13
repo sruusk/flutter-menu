@@ -10,12 +10,12 @@ class Updater {
   late Release latestRelease;
   SharedPreferences? prefs;
 
-  Future<bool> isUpdateAvailable() async {
+  Future<bool> isUpdateAvailable({bool forceCheck = false}) async {
     prefs ??= await SharedPreferences.getInstance();
 
     // Check if last checked is more than 1 day ago
     String? lastChecked = prefs?.getString('lastChecked');
-    if (lastChecked != null) {
+    if (!forceCheck && lastChecked != null) {
       DateTime lastCheckedDate = DateTime.parse(lastChecked);
       if (DateTime.now().difference(lastCheckedDate).inDays < 1) {
         if (kDebugMode) {
@@ -41,8 +41,8 @@ class Updater {
       prefs?.setString('lastChecked', DateTime.now().toString());
 
       // Get current version
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      AppVersion currentVersion = AppVersion.fromString(packageInfo.version);
+      AppVersion currentVersion = await this.currentVersion;
+
       // Compare versions
       if (latestRelease.version > currentVersion) {
         if(kDebugMode) {
@@ -60,6 +60,11 @@ class Updater {
     }
 
     return false;
+  }
+
+  Future<AppVersion> get currentVersion async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return AppVersion.fromString(packageInfo.version);
   }
 
   void downloadAndInstallUpdate() {

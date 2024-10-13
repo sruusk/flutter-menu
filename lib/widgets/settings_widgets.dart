@@ -31,9 +31,9 @@ class MenuAnchorWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).colorScheme.primaryContainer),
+            backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).colorScheme.surfaceBright),
             shadowColor: WidgetStateProperty.all<Color>(Theme.of(context).colorScheme.shadow),
-            elevation: WidgetStateProperty.all<double>(1),
+            elevation: WidgetStateProperty.all<double>(2),
           ),
           onPressed: () {
             if (controller.isOpen) {
