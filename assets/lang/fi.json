@@ -28,7 +28,10 @@
   },
   "menu": {
     "noName": "",
-    "noData": "Valitulle päivälle ei ole saatavilla ruokalistaa"
+    "noData": "Valitulle päivälle ei ole saatavilla ruokalistaa",
+    "error": "Virhe ladattaessa ruokalistaa",
+    "retry": "Yritä uudelleen",
+    "errorDetails": "Näytä virheen tiedot"
   },
   "update": {
       "available": "Uusi versio saatavilla"

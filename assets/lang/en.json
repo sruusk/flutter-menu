@@ -28,7 +28,10 @@
   },
   "menu": {
     "noName": "No english name available",
-    "noData": "No menu available for selected day"
+    "noData": "No menu available for selected day",
+    "error": "Error loading menu",
+    "retry": "Retry",
+    "errorDetails": "Show full error details"
   },
   "update": {
     "available": "New version available"

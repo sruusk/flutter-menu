@@ -10,6 +10,7 @@ import 'preferences.dart';
 import 'widgets/update_widget.dart';
 import 'widgets/narrow_restaurant_list.dart';
 import 'widgets/wide_restaurant_list.dart';
+import 'widgets/error_display.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure the binding is initialized
@@ -131,7 +132,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     }
                   });
                 } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
+                  return ErrorDisplay(
+                    error: snapshot.error!,
+                    onRetry: () {
+                      setState(() {
+                        futureRestaurants = api.menu;
+                      });
+                    },
+                  );
                 } else if(data != null && data.isEmpty && snapshot.connectionState == ConnectionState.done) {
                   return DelayedWidget(
                       delay: const Duration(seconds: 1),
