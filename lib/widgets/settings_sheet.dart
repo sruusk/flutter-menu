@@ -185,6 +185,10 @@ class _DateBottomSheetState extends State<DateBottomSheet>
                         elevation: WidgetStateProperty.all<double>(2),
                       ),
                       onPressed: () async {
+                        if(updateAvailable) {
+                          updater.downloadAndInstallUpdate();
+                          return;
+                        }
                         _controller.repeat();
                         bool isUpdateAvailable = await updater
                             .isUpdateAvailable(forceCheck: true);
