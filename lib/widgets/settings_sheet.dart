@@ -87,19 +87,20 @@ class _DateBottomSheetState extends State<DateBottomSheet>
                 if (snapshot.hasData) {
                   return SettingsCard(
                     title: "${AppLocalizations.of(context).translate(
-                        'settings.selectDate')}: ",
+                        'settings.selectDay')}: ",
                     child: MenuAnchorWidget(
                       menuChildren: [
                         for (var dateOption in snapshot.data!)
                           MenuItemButton(
-                            child: Text(dateOption.item2),
+                            child: Text(AppLocalizations.of(context)
+                                .translate('weekdays.${dateOption.item2}')),
                             onPressed: () {
                               widget.setDate(dateOption.item1);
                               Navigator.pop(context);
                             },
                           ),
                       ],
-                      buttonText: widget.date.toString().substring(0, 10),
+                      buttonText: AppLocalizations.of(context).translate('weekdays.${MenuApi.getDayOfWeek(widget.date.weekday)}'),
                       onPressed: () {},
                     ),
                   );
