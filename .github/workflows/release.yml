@@ -15,6 +15,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Extract A Secret
+        uses: Plabick/GitHub-Secret-Extractor@master
+        with:
+          secret: ${{ secrets.SIGNING_KEY}}
+      
       # Checkout Repository
       - name: Checkout Repository
         uses: actions/checkout@v4
